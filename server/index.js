@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 import connectDB from "./src/db/connection.js";
+import authRoutes from "./src/routes/auth.js";
 import taskRoutes from "./src/routes/task.js";
 
 // Environment variables config
@@ -17,6 +18,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/task", taskRoutes);
 
 // Database initialization and server spining up
