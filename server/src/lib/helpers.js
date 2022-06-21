@@ -31,7 +31,7 @@ const generateJwt = (userId) => {
 
 const updateJwtToken = async (userId) => {
   try {
-    const token = generateJwt();
+    const token = generateJwt(userId);
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       {
