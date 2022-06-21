@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./src/db/connection.js";
 import authRoutes from "./src/routes/auth.js";
 import taskRoutes from "./src/routes/task.js";
+import { isAuthorized } from "./src/middlewares/auth.js";
 
 // Environment variables config
 dotenv.config();
@@ -19,7 +20,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/task", taskRoutes);
+app.use("/api/task", isAuthorized, taskRoutes);
 
 // Database initialization and server spining up
 (async () => {
