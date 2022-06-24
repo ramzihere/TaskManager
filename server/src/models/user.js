@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
     required: [true, "Email is required for register"],
     unique: [true, "Email is already exists"],
     trim: true,
+    lowercase: true,
   },
   password: {
     type: String,
@@ -13,6 +14,7 @@ const userSchema = new mongoose.Schema({
   },
   token: {
     type: String,
+    default: "",
   },
 });
 

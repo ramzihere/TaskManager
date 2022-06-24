@@ -5,6 +5,8 @@ import connectDB from "./src/db/connection.js";
 import authRoutes from "./src/routes/auth.js";
 import taskRoutes from "./src/routes/task.js";
 import { isAuthorized } from "./src/middlewares/auth.js";
+import notFound from "./src/middlewares/notFound.js";
+import errorHandler from "./src/middlewares/error.js";
 
 // Environment variables config
 dotenv.config();
@@ -22,8 +24,12 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/task", isAuthorized, taskRoutes);
 
+// middleware
+app.use(notFound);
+app.use(errorHandler);
+
 // Database initialization and server spining up
-(async () => {
+const startServer = async () => {
   try {
     await connectDB();
     app.listen(PORT, () => {
@@ -32,4 +38,6 @@ app.use("/api/task", isAuthorized, taskRoutes);
   } catch (error) {
     console.log("error on connecting database", error);
   }
-})();
+};
+
+startServer();

@@ -1,7 +1,17 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import User from "../models/user.js";
+import CustomError from "../classes/Error.js";
+
+const asyncWrapper = (cb) => {
+  return async (req, res, next) => {
+    try {
+      await cb(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  };
+};
 
 const hashPassword = async (password) => {
   try {
@@ -29,20 +39,14 @@ const generateJwt = (userId) => {
   return token;
 };
 
-const updateJwtToken = async (userId) => {
-  try {
-    const token = generateJwt(userId);
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        token,
-      },
-      { new: true }
-    );
-    return updatedUser;
-  } catch (error) {
-    throw error;
-  }
+const createCustomError = (message, statusCode) => {
+  return new CustomError(message, statusCode);
 };
 
-export { hashPassword, comparePassword, updateJwtToken };
+export {
+  asyncWrapper,
+  hashPassword,
+  comparePassword,
+  generateJwt,
+  createCustomError,
+};
